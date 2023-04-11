@@ -13,7 +13,6 @@
 #include "TheCoreSurvivorsCharacter.generated.h"
 
 
-
 UCLASS(config=Game)
 class ATheCoreSurvivorsCharacter : public ACharacter,public ILifeManagerInterface
 {
