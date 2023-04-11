@@ -127,3 +127,25 @@ void ATheCoreSurvivorsCharacter::MoveRight(float Value)
 		AddMovementInput(Direction, Value);
 	}
 }
+
+
+void ATheCoreSurvivorsCharacter::ReduceAmount_Implementation(float damage)
+{
+
+	_LifeComponent->ReduceAmount_Implementation(damage);
+}
+
+void ATheCoreSurvivorsCharacter::RestoreAmount_Implementation(float recover)
+{
+	_LifeComponent->RestoreAmount_Implementation(recover);
+}
+
+void ATheCoreSurvivorsCharacter::StartDamageOverTime_Implementation(float dps)
+{
+	_LifeComponent->StartDamageOverTime_Implementation((dps));
+}
+
+void ATheCoreSurvivorsCharacter::StopDamageOverTime_Implementation()
+{
+	_LifeComponent->StopDamageOverTime_Implementation();
+}
