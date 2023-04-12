@@ -47,7 +47,7 @@ ATheCoreSurvivorsCharacter::ATheCoreSurvivorsCharacter()
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
-	//this->_LifeComponent = CreateDefaultSubobject<ULifeComponent>(TEXT("_LifeComponent"));
+	this->_LifeComponent = CreateDefaultSubobject<ULifeComponent>(TEXT("_LifeComponent"));
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 }
@@ -105,7 +105,6 @@ void ATheCoreSurvivorsCharacter::MoveForward(float Value)
 
 	if ((Controller != nullptr) && (Value != 0.0f))
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("Values %f"),Value));
 
 		// find out which way is forward
 		const FRotator Rotation = Controller->GetControlRotation();
@@ -136,27 +135,28 @@ void ATheCoreSurvivorsCharacter::MoveRight(float Value)
 void ATheCoreSurvivorsCharacter::ReduceAmount_Implementation(float damage)
 {
 
-	// _LifeComponent->ReduceAmount_Implementation(damage);
+	_LifeComponent->ReduceAmount_Implementation(damage);
 }
 
 void ATheCoreSurvivorsCharacter::RestoreAmount_Implementation(float recover)
 {
-	// _LifeComponent->RestoreAmount_Implementation(recover);
+	_LifeComponent->RestoreAmount_Implementation(recover);
 }
 
 void ATheCoreSurvivorsCharacter::StartDamageOverTime_Implementation(float dps)
 {
-	// _LifeComponent->StartDamageOverTime_Implementation((dps));
+	_LifeComponent->StartDamageOverTime_Implementation((dps));
 }
 
 void ATheCoreSurvivorsCharacter::StopDamageOverTime_Implementation()
 {
-	// _LifeComponent->StopDamageOverTime_Implementation();
+	_LifeComponent->StopDamageOverTime_Implementation();
 }
 
 void ATheCoreSurvivorsCharacter::BeginPlay()
 {
-	//_LifeComponent->OnKillEntity.BindUObject(this,&ATheCoreSurvivorsCharacter::KillPlayer);
+	Super::BeginPlay();
+	_LifeComponent->OnKillEntity.BindUObject(this,&ATheCoreSurvivorsCharacter::KillPlayer);
 }
 
 void ATheCoreSurvivorsCharacter::KillPlayer()
