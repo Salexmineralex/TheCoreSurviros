@@ -139,27 +139,28 @@ void ATheCoreSurvivorsCharacter::MoveRight(float Value)
 void ATheCoreSurvivorsCharacter::ReduceAmount_Implementation(float damage)
 {
 
-	// _LifeComponent->ReduceAmount_Implementation(damage);
+	_LifeComponent->ReduceAmount_Implementation(damage);
 }
 
 void ATheCoreSurvivorsCharacter::RestoreAmount_Implementation(float recover)
 {
-	// _LifeComponent->RestoreAmount_Implementation(recover);
+	_LifeComponent->RestoreAmount_Implementation(recover);
 }
 
 void ATheCoreSurvivorsCharacter::StartDamageOverTime_Implementation(float dps)
 {
-	// _LifeComponent->StartDamageOverTime_Implementation((dps));
+	_LifeComponent->StartDamageOverTime_Implementation((dps));
 }
 
 void ATheCoreSurvivorsCharacter::StopDamageOverTime_Implementation()
 {
-	// _LifeComponent->StopDamageOverTime_Implementation();
+	_LifeComponent->StopDamageOverTime_Implementation();
 }
 
 void ATheCoreSurvivorsCharacter::BeginPlay()
 {
-	//_LifeComponent->OnKillEntity.BindUObject(this,&ATheCoreSurvivorsCharacter::KillPlayer);
+	Super::BeginPlay();
+	_LifeComponent->OnKillEntity.BindUObject(this,&ATheCoreSurvivorsCharacter::KillPlayer);
 }
 
 void ATheCoreSurvivorsCharacter::KillPlayer()
