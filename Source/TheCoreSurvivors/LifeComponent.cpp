@@ -5,6 +5,8 @@
 
 #include <algorithm>
 
+#include "Engine/Engine.h"
+
 // Sets default values for this component's properties
 ULifeComponent::ULifeComponent()
 {
@@ -42,7 +44,7 @@ void ULifeComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 void ULifeComponent::ReduceAmount_Implementation(float damage)
 {
 
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("CurrentLife %d"), CurrentLife));
+	
 	CurrentLife -= damage;
 
 	//TO-DO
@@ -52,7 +54,11 @@ void ULifeComponent::ReduceAmount_Implementation(float damage)
 	{
 		//TO-DO
 		//Kill component owner
+		OnKillEntity.Execute();
+
 	}
+
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("CurrentLife %d"), CurrentLife));
 	
 }
 
@@ -66,9 +72,9 @@ void ULifeComponent::RestoreAmount_Implementation(float recover)
 		CurrentLife = MaxLife;
 	}else
 	{
-		CurrentLife += recover;
+		CurrentLife = auxLife;
 	}
-
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("CurrentLife %d"), CurrentLife));
 	//TO-DO
 	//Change Widget Life Percent
 }
