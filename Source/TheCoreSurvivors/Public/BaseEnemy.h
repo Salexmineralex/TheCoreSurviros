@@ -24,6 +24,7 @@ public:
 
 	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category = "BaseEnemy")
 		class AActor* Target;
+	float GetMovementSpeed() { return MovementSpeed; }
 
 protected:
 	// Called when the game starts or when spawned
