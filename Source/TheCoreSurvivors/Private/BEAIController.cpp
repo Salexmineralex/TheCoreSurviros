@@ -23,7 +23,7 @@ void ABEAIController::Tick(float DeltaTime)
 
 void ABEAIController::OnMoveCompleted(FAIRequestID RequestID, EPathFollowingResult::Type Result)  
 {
-	/*FVector MyCharacterPosition = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation();
+	FVector MyCharacterPosition = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation();
 
-	MoveToLocation(MyCharacterPosition);*/
+	MoveToLocation(MyCharacterPosition);
 }
