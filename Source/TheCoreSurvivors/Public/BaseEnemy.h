@@ -3,11 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+#include "GameFramework/Pawn.h"
+#include "Components/BoxComponent.h"
+#include "Components/StaticMeshComponent.h"
+#include "BEAIController.h"
 #include "BaseEnemy.generated.h"
 
 UCLASS()
-class THECORESURVIVORS_API ABaseEnemy : public AActor
+class THECORESURVIVORS_API ABaseEnemy : public APawn
 {
 	GENERATED_BODY()
 	
@@ -32,6 +35,11 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "BaseEnemy")
 		class UStaticMeshComponent* Mesh;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "BaseEnemy")
+		class UBoxComponent* Collider;
+
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BaseEnemy")
 		float MovementSpeed;
 
