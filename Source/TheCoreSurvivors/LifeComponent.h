@@ -13,6 +13,8 @@ class THECORESURVIVORS_API ULifeComponent : public UActorComponent,public ILifeM
 {
 	GENERATED_BODY()
 
+	DECLARE_DELEGATE(FKillEntity);
+
 	UPROPERTY(BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	int MaxLife = 100;
 	UPROPERTY(BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -47,5 +49,6 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	FKillEntity OnKillEntity;
 		
 };

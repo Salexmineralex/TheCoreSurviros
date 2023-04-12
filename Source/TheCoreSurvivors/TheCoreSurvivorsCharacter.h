@@ -23,7 +23,8 @@ class ATheCoreSurvivorsCharacter : public ACharacter,public ILifeManagerInterfac
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FollowCamera;
 
-	ULifeComponent* _LifeComponent = CreateDefaultSubobject<ULifeComponent>(TEXT("_LifeComponent"));
+	//ULifeComponent* _LifeComponent = nullptr;
+	
 	
 public:
 	ATheCoreSurvivorsCharacter();
@@ -47,6 +48,7 @@ public:
 
 protected:
 
+	void BeginPlay() override;
 	/** Called for forwards/backward input */
 	void MoveForward(float Value);
 
@@ -70,6 +72,8 @@ protected:
 
 	/** Handler for when a touch input stops. */
 	void TouchStopped(ETouchIndex::Type FingerIndex, FVector Location);
+
+	void KillPlayer();
 
 protected:
 	// APawn interface
