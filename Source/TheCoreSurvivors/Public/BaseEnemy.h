@@ -24,6 +24,9 @@ public:
 
 	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category = "BaseEnemy")
 		class AActor* Target;
+
+	UFUNCTION()
+	void BeginOverlap(class UPrimitiveComponent* overlappedComponent, class AActor* otherActor,class UPrimitiveComponent* otherComp, int32 otherBodyIndex, bool bFromSweep,const FHitResult& sweepResult);
 	
 
 protected:

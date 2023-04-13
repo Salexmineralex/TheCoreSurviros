@@ -17,6 +17,7 @@ ABaseEnemy::ABaseEnemy()
 	//Create the Collider
 	Collider = CreateDefaultSubobject<UBoxComponent>(TEXT("Collider"));
 	Collider->SetupAttachment(RootComponent);
+	
 
 	// Asign a controller
 	AIControllerClass = ABEAIController::StaticClass();
@@ -30,7 +31,7 @@ ABaseEnemy::ABaseEnemy()
 void ABaseEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	Collider->OnComponentBeginOverlap.AddDynamic(this, &ABaseEnemy::BeginOverlap);
 
 	if (Controller)
 	{
@@ -43,7 +44,34 @@ void ABaseEnemy::BeginPlay()
 			Controller->Possess(MyPawn);
 		}
 	}
+
+	
+
+
 }
+
+
+void ABaseEnemy::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex,
+	bool bFromSweep,
+	const FHitResult& SweepResult) 
+{
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("Entrado")));
+	// Comprueba que el actor que ha entrado en contacto es válido
+	if (OtherActor != nullptr)
+	{
+		ILifeManagerInterface* LifeManager = Cast<ILifeManagerInterface>(OtherActor);
+
+
+		if (LifeManager)
+		{
+			LifeManager->Execute_ReduceAmount(OtherActor, 10);
+		}
+
+	}
+};
 
 // Called every frame
 void ABaseEnemy::Tick(float DeltaTime)

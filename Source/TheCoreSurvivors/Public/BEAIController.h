@@ -3,7 +3,9 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
+#include "../LifeManagerInterface.h"
 #include "BEAIController.generated.h"
+
 
 /**
  * 
@@ -22,10 +24,7 @@ protected:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void OnMoveCompleted(FAIRequestID RequestID, EPathFollowingResult::Type Result) override;
-	
-	void OnBoxOverlapBegin(class UPrimitiveComponent* overlappedComponent, class AActor* otherActor,
-		class UPrimitiveComponent* otherComp, int32 otherBodyIndex, bool bFromSweep,
-		const FHitResult& sweepResult);
+
 
 	FVector Direction;
 
