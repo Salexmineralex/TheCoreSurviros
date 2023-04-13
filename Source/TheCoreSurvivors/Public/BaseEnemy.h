@@ -7,6 +7,7 @@
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "BEAIController.h"
+#include "Kismet/GameplayStatics.h"
 #include "BaseEnemy.generated.h"
 
 UCLASS()
@@ -24,7 +25,7 @@ public:
 
 	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category = "BaseEnemy")
 		class AActor* Target;
-	float GetMovementSpeed() { return MovementSpeed; }
+	
 
 protected:
 	// Called when the game starts or when spawned
