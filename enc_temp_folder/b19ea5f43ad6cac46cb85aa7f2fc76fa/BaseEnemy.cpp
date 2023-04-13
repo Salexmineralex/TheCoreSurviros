@@ -20,6 +20,7 @@ ABaseEnemy::ABaseEnemy()
 
 	// Asign a controller
 	AIControllerClass = ABEAIController::StaticClass();
+
 	
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -48,4 +49,5 @@ void ABaseEnemy::BeginPlay()
 // Called every frame
 void ABaseEnemy::Tick(float DeltaTime)
 {
+	//
 }
