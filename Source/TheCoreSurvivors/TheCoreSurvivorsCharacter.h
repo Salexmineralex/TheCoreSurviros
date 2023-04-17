@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "LifeComponent.h"
 #include "LifeManagerInterface.h"
+#include "SpawnActorsComponent.h"
 #include "GameFramework/Character.h"
 #include "Item.h"
 #include "FirstAidKitItem.h"
@@ -30,6 +31,8 @@ class ATheCoreSurvivorsCharacter : public ACharacter,public ILifeManagerInterfac
 	
 	
 
+	
+	USpawnActorsComponent* _SpawnActor = nullptr;
 	
 	
 public:
