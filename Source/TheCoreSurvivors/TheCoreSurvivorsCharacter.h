@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "LifeComponent.h"
 #include "LifeManagerInterface.h"
+#include "SpawnActorsComponent.h"
 #include "GameFramework/Character.h"
 #include "TheCoreSurvivorsCharacter.generated.h"
 
@@ -24,6 +25,8 @@ class ATheCoreSurvivorsCharacter : public ACharacter,public ILifeManagerInterfac
 	class UCameraComponent* FollowCamera;
 
 	ULifeComponent* _LifeComponent = nullptr;
+	
+	USpawnActorsComponent* _SpawnActor = nullptr;
 	
 	
 public:
