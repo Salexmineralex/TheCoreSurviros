@@ -3,6 +3,7 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
+#include "Navigation/CrowdFollowingComponent.h"
 #include "../LifeManagerInterface.h"
 #include "BEAIController.generated.h"
 

@@ -3,7 +3,11 @@
 #include "BaseEnemy.h"
 
 // Sets default values
-ABaseEnemy::ABaseEnemy()
+ABaseEnemy::ABaseEnemy(const FObjectInitializer& ObjectInitializer):
+
+	// Crowd AI Controller 
+	Super(ObjectInitializer.SetDefaultSubobjectClass<UCrowdFollowingComponent>(TEXT("CrowdAIPathFollowingComponent")))
+
 {
  	
 	//Create the root 
@@ -18,7 +22,8 @@ ABaseEnemy::ABaseEnemy()
 	Collider = CreateDefaultSubobject<UBoxComponent>(TEXT("Collider"));
 	Collider->SetupAttachment(RootComponent);
 	
-
+	isColliding = false;
+	
 	// Asign a controller
 	AIControllerClass = ABEAIController::StaticClass();
 	
@@ -33,6 +38,7 @@ void ABaseEnemy::BeginPlay()
 	Super::BeginPlay();
 	Collider->OnComponentBeginOverlap.AddDynamic(this, &ABaseEnemy::BeginOverlap);
 
+
 	if (Controller)
 	{
 		// Obtener una referencia al Pawn personalizado
@@ -44,10 +50,6 @@ void ABaseEnemy::BeginPlay()
 			Controller->Possess(MyPawn);
 		}
 	}
-
-	
-
-
 }
 
 
@@ -58,6 +60,8 @@ void ABaseEnemy::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	bool bFromSweep,
 	const FHitResult& SweepResult) 
 {
+	isColliding = true;
+
 	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("Entrado")));
 	// Comprueba que el actor que ha entrado en contacto es válido
 	if (OtherActor != nullptr)
@@ -67,13 +71,22 @@ void ABaseEnemy::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 
 		if (LifeManager)
 		{
-			LifeManager->Execute_ReduceAmount(OtherActor, 10);
+			LifeManager->Execute_ReduceAmount(OtherActor, NormalDamage);
 		}
 
 	}
-};
+}
+void ABaseEnemy::EndOverlap(UPrimitiveComponent* overlappedComponent, AActor* otherActor, UPrimitiveComponent* otherComp, int32 otherBodyIndex, bool bFromSweep, const FHitResult& sweepResult)
+{
+	isColliding = false;
+}
+;
 
 // Called every frame
 void ABaseEnemy::Tick(float DeltaTime)
 {
+	if (isColliding) 
+	{
+		// Ejecutar daño con el tiempo
+	}
 }

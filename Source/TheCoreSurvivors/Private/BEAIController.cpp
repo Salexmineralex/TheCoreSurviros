@@ -1,7 +1,6 @@
 
 #include "BEAIController.h"
-
-void ABEAIController::BeginPlay() 
+void ABEAIController::BeginPlay()
 {
 	Super::BeginPlay();
 	
@@ -23,6 +22,5 @@ void ABEAIController::Tick(float DeltaTime)
 
 void ABEAIController::OnMoveCompleted(FAIRequestID RequestID, EPathFollowingResult::Type Result)  
 {
-
 
 }

@@ -17,7 +17,7 @@ class THECORESURVIVORS_API ABaseEnemy : public APawn
 public:	
 	
 	// Sets default values for this actor's properties
-	ABaseEnemy();
+	ABaseEnemy(const FObjectInitializer& ObjectInitializer);
 	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -28,7 +28,10 @@ public:
 	UFUNCTION()
 	void BeginOverlap(class UPrimitiveComponent* overlappedComponent, class AActor* otherActor,class UPrimitiveComponent* otherComp, int32 otherBodyIndex, bool bFromSweep,const FHitResult& sweepResult);
 	
+	UFUNCTION()
+	void EndOverlap(class UPrimitiveComponent* overlappedComponent, class AActor* otherActor, class UPrimitiveComponent* otherComp, int32 otherBodyIndex, bool bFromSweep, const FHitResult& sweepResult);
 
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -47,6 +50,21 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BaseEnemy")
 		float MovementSpeed;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BaseEnemy")
+		float TotalLife;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BaseEnemy")
+		bool isColliding;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BaseEnemy")
+		int NormalDamage;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BaseEnemy")
+		int DpsDamage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BaseEnemy")
+		int RatioToAppear;
+	
 	// For Debug
 	FVector Direction; 
 
