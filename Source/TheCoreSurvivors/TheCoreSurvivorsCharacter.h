@@ -24,8 +24,10 @@ class ATheCoreSurvivorsCharacter : public ACharacter,public ILifeManagerInterfac
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FollowCamera;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly,Category = Components,meta = (AllowPrivateAccess = "true"))
 	ULifeComponent* _LifeComponent = nullptr;
-	
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly,Category = Components,meta = (AllowPrivateAccess = "true"))
 	USpawnActorsComponent* _SpawnActor = nullptr;
 	
 	
