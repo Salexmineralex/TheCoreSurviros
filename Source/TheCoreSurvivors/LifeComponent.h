@@ -15,10 +15,7 @@ class THECORESURVIVORS_API ULifeComponent : public UActorComponent,public ILifeM
 
 	DECLARE_DELEGATE(FKillEntity);
 
-	UPROPERTY(BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	int MaxLife = 100;
-	UPROPERTY(BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	int CurrentLife = 100;
+	
 	UPROPERTY(BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	bool IsDamageOverTime = false;
 	UPROPERTY(BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -27,6 +24,11 @@ class THECORESURVIVORS_API ULifeComponent : public UActorComponent,public ILifeM
 public:	
 	// Sets default values for this component's properties
 	ULifeComponent();
+
+	UPROPERTY(BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+		int MaxLife = 100;
+	UPROPERTY(BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+		int CurrentLife = 100;
 
 	//LifeComponent
 	UFUNCTION(BlueprintCallable,BlueprintNativeEvent, Category = "Damage")
@@ -39,7 +41,9 @@ public:
 	void StartDamageOverTime(float dps); virtual void StartDamageOverTime_Implementation(float dps) override;
 
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable, Category = "Damage")
-	void StopDamageOverTime(); virtual void StopDamageOverTime_Implementation() override ;
+	void StopDamageOverTime(); virtual void StopDamageOverTime_Implementation() override;
+
+
 
 protected:
 	// Called when the game starts

@@ -26,7 +26,7 @@ protected:
 
 	virtual void OnMoveCompleted(FAIRequestID RequestID, EPathFollowingResult::Type Result) override;
 
-
+	
 	FVector Direction;
 
 	float TotalDistance;

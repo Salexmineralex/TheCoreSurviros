@@ -3,13 +3,9 @@
 #include "BaseEnemy.h"
 
 // Sets default values
-ABaseEnemy::ABaseEnemy(const FObjectInitializer& ObjectInitializer):
-
-	// Crowd AI Controller 
-	Super(ObjectInitializer.SetDefaultSubobjectClass<UCrowdFollowingComponent>(TEXT("CrowdAIPathFollowingComponent")))
-
+ABaseEnemy::ABaseEnemy()
 {
- 	
+ 
 	//Create the root 
 	RootScene = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	RootComponent = RootScene;
@@ -24,17 +20,26 @@ ABaseEnemy::ABaseEnemy(const FObjectInitializer& ObjectInitializer):
 	
 	isColliding = false;
 	
+	// MovementComponent
+	MovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("Movement"));
+	MovementComponent->MaxSpeed = MovementSpeed;
+
+	//	Life Component
+	_LifeComponent = CreateDefaultSubobject<ULifeComponent>(TEXT("LifeComponent"));
+	
+
 	// Asign a controller
 	AIControllerClass = ABEAIController::StaticClass();
 	
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 // Called when the game starts or when spawned
 void ABaseEnemy::BeginPlay()
 {
+	MovementComponent->MaxSpeed = MovementSpeed;
+	_LifeComponent->MaxLife = TotalLife;
 	Super::BeginPlay();
 	Collider->OnComponentBeginOverlap.AddDynamic(this, &ABaseEnemy::BeginOverlap);
 

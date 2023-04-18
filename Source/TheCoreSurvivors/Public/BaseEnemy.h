@@ -7,6 +7,9 @@
 #include "Components/StaticMeshComponent.h"
 #include "BEAIController.h"
 #include "Kismet/GameplayStatics.h"
+#include "../LifeComponent.h"
+#include "../LifeManagerInterface.h"
+#include "GameFramework/FloatingPawnMovement.h"
 #include "BaseEnemy.generated.h"
 
 UCLASS()
@@ -17,7 +20,7 @@ class THECORESURVIVORS_API ABaseEnemy : public APawn
 public:	
 	
 	// Sets default values for this actor's properties
-	ABaseEnemy(const FObjectInitializer& ObjectInitializer);
+	ABaseEnemy();
 	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -31,11 +34,13 @@ public:
 	UFUNCTION()
 	void EndOverlap(class UPrimitiveComponent* overlappedComponent, class AActor* otherActor, class UPrimitiveComponent* otherComp, int32 otherBodyIndex, bool bFromSweep, const FHitResult& sweepResult);
 
+	ULifeComponent* _LifeComponent = nullptr;
+	UFloatingPawnMovement* MovementComponent = nullptr;
 	
 protected:
+	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "BaseEnemy")
 		class USceneComponent* RootScene;
@@ -45,7 +50,6 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "BaseEnemy")
 		class UBoxComponent* Collider;
-
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BaseEnemy")
 		float MovementSpeed;
