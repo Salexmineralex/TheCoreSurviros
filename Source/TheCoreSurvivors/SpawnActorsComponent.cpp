@@ -60,11 +60,11 @@ FVector USpawnActorsComponent::GetNewLocation(FVector directon)
 {
 	float xOffset = (FMath::FRand() - 0.5f) * N;
 	float yOffset = (FMath::FRand() - 0.5f) * M;
-	FVector offset = FVector(xOffset, yOffset, 0.0f) * directon;
+	
+	FVector offset = FVector(xOffset*directon.X, yOffset*directon.Y, 0.0f);
 
 	offset += GetOwner()->GetActorLocation();
-
-	return FVector();
+	return FVector(offset);
 	
 }
 
@@ -73,21 +73,21 @@ FVector USpawnActorsComponent::GetCompassDirecton(Compass direction)
 {
 	switch (direction)
 	{
-		case North: return GetOwner()->GetActorForwardVector(); break;	
-		case West: return -GetOwner()->GetActorRightVector(); break;
-		case South:return -GetOwner()->GetActorForwardVector(); break;
-		case East: GetOwner()->GetActorRightVector(); break;
+		case Compass::North: return GetOwner()->GetActorForwardVector(); break;	
+		case Compass::West: return -GetOwner()->GetActorRightVector(); break;
+		case Compass::South:return -GetOwner()->GetActorForwardVector(); break;
+		case Compass::East: return GetOwner()->GetActorRightVector(); break;
 	}
-
 	return FVector();
 }
 
 void USpawnActorsComponent::SpawnActor(Compass direction)
 {
 
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("Spawn")));
+	
 
 	FVector spawnPosition = GetNewLocation(GetCompassDirecton(direction));
+	GEngine->AddOnScreenDebugMessage(-1, 1.5f, FColor::Yellow, spawnPosition.ToString());
 
 	FActorSpawnParameters SpawnInfo;
 

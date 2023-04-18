@@ -24,10 +24,10 @@ public:
 	// Sets default values for this component's properties
 	USpawnActorsComponent();
 
-	UPROPERTY( BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float N;
 
-	UPROPERTY( BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float M;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
