@@ -3,6 +3,8 @@
 
 #include "TheCoreSurvivors/_dataRaul/ThrowableKnife.h"
 
+#include "TheCoreSurvivors/LifeManagerInterface.h"
+
 // Sets default values
 AThrowableKnife::AThrowableKnife()
 {
@@ -26,6 +28,8 @@ void AThrowableKnife::BeginPlay()
 {
 	Super::BeginPlay();
 
+	boxComponent->OnComponentBeginOverlap.AddDynamic(this, &AThrowableKnife::BeginOverlap);
+
 }
 
 // Called every frame
@@ -35,3 +39,18 @@ void AThrowableKnife::Tick(float DeltaTime)
 
 }
 
+void AThrowableKnife::BeginOverlap(UPrimitiveComponent* overlappedComponent, AActor* otherActor,
+	UPrimitiveComponent* otherComp, int32 otherBodyIndex, bool bFromSweep, const FHitResult& sweepResult)
+{
+	if (otherActor != nullptr)
+	{
+		ILifeManagerInterface* LifeManager = Cast<ILifeManagerInterface>(otherActor);
+
+
+		if (LifeManager)
+		{
+			LifeManager->Execute_ReduceAmount(otherActor, this->damage);
+		}
+
+	}
+}

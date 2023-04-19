@@ -7,6 +7,7 @@
 #include "LifeManagerInterface.h"
 #include "SpawnActorsComponent.h"
 #include "GameFramework/Character.h"
+#include "ThrowableKnifeSpawnerComponent.h"
 #include "TheCoreSurvivorsCharacter.generated.h"
 
 
@@ -29,6 +30,9 @@ class ATheCoreSurvivorsCharacter : public ACharacter,public ILifeManagerInterfac
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly,Category = Components,meta = (AllowPrivateAccess = "true"))
 	USpawnActorsComponent* _SpawnActor = nullptr;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly,Category = Components,meta = (AllowPrivateAccess = "true"))
+	UThrowableKnifeSpawnerComponent* _ThowableKnifeSpawner = nullptr;
 	
 	
 public:
