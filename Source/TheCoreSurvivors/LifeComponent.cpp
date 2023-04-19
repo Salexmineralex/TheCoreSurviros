@@ -69,11 +69,12 @@ void ULifeComponent::RestoreAmount_Implementation(float recover)
 
 	if(auxLife >= MaxLife)
 	{
-		CurrentLife = MaxLife;
-	}else
-	{
-		CurrentLife = auxLife;
+		auxLife = MaxLife;
 	}
+	
+	CurrentLife = auxLife;
+	
+	
 	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("CurrentLife %d"), CurrentLife));
 	//TO-DO
 	//Change Widget Life Percent

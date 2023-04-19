@@ -33,6 +33,9 @@ class ATheCoreSurvivorsCharacter : public ACharacter,public ILifeManagerInterfac
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly,Category = Components,meta = (AllowPrivateAccess = "true"))
 	USpawnActorsComponent* _SpawnActor = nullptr;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly,Category = Components,meta = (AllowPrivateAccess = "true"))
+	UThrowableKnifeSpawnerComponent* _ThowableKnifeSpawner = nullptr;
 	
 	
 public:
