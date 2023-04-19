@@ -4,21 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "BaseEnemy.h"
-#include "UObject/Object.h"
-#include "NormalEnemy.generated.h"
+#include "SlowEnemy.generated.h"
 
 /**
  * 
  */
-
 UCLASS()
-class THECORESURVIVORS_API ANormalEnemy : public ABaseEnemy
+class THECORESURVIVORS_API ASlowEnemy : public ABaseEnemy
 {
 	GENERATED_BODY()
 
-
 protected:
-
 	virtual void BeginPlay() override;
 
 };

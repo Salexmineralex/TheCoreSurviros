@@ -3,10 +3,6 @@
 
 #include "NormalEnemy.h"
 
-ANormalEnemy::ANormalEnemy()
-{
-
-}
 
 void ANormalEnemy::BeginPlay()
 {
