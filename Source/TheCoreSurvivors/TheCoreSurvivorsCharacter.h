@@ -23,11 +23,14 @@ class ATheCoreSurvivorsCharacter : public ACharacter,public ILifeManagerInterfac
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FollowCamera;
 
-	ULifeComponent* _LifeComponent = nullptr;
+	
 	
 	
 public:
 	ATheCoreSurvivorsCharacter();
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+		ULifeComponent* _LifeComponent = nullptr;
 
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Input)
