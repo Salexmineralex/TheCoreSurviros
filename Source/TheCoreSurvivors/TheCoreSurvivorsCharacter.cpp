@@ -47,6 +47,11 @@ ATheCoreSurvivorsCharacter::ATheCoreSurvivorsCharacter()
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
+	this->_LifeComponent = CreateDefaultSubobject<ULifeComponent>(TEXT("_LifeComponent"));
+
+	this->_SpawnActor = CreateDefaultSubobject<USpawnActorsComponent>(TEXT("_SpawnComponent"));
+	
+	this->_ThowableKnifeSpawner = CreateDefaultSubobject<UThrowableKnifeSpawnerComponent>(TEXT("_ThowableKnifeSpawner"));
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 }
@@ -101,8 +106,10 @@ void ATheCoreSurvivorsCharacter::LookUpAtRate(float Rate)
 
 void ATheCoreSurvivorsCharacter::MoveForward(float Value)
 {
+
 	if ((Controller != nullptr) && (Value != 0.0f))
 	{
+
 		// find out which way is forward
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
@@ -126,4 +133,40 @@ void ATheCoreSurvivorsCharacter::MoveRight(float Value)
 		// add movement in that direction
 		AddMovementInput(Direction, Value);
 	}
+}
+
+
+void ATheCoreSurvivorsCharacter::ReduceAmount_Implementation(float damage)
+{
+
+	_LifeComponent->ReduceAmount_Implementation(damage);
+}
+
+void ATheCoreSurvivorsCharacter::RestoreAmount_Implementation(float recover)
+{
+	_LifeComponent->RestoreAmount_Implementation(recover);
+}
+
+void ATheCoreSurvivorsCharacter::StartDamageOverTime_Implementation(float dps)
+{
+	_LifeComponent->StartDamageOverTime_Implementation((dps));
+}
+
+void ATheCoreSurvivorsCharacter::StopDamageOverTime_Implementation()
+{
+	_LifeComponent->StopDamageOverTime_Implementation();
+}
+
+void ATheCoreSurvivorsCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+	_LifeComponent->OnKillEntity.BindUObject(this,&ATheCoreSurvivorsCharacter::KillPlayer);
+
+	
+}
+
+void ATheCoreSurvivorsCharacter::KillPlayer()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("Muerto")));
+
 }
