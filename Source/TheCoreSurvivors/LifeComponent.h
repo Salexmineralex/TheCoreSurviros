@@ -27,8 +27,9 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 		float MaxLife = 100;
+
 	UPROPERTY(BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-		float CurrentLife = 100;
+		float CurrentLife = MaxLife;
 
 	//LifeComponent
 	UFUNCTION(BlueprintCallable,BlueprintNativeEvent, Category = "Damage")
