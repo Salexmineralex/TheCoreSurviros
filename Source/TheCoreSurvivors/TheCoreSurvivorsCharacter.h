@@ -5,13 +5,13 @@
 #include "CoreMinimal.h"
 #include "LifeComponent.h"
 #include "LifeManagerInterface.h"
+#include "SpawnActorsComponent.h"
 #include "GameFramework/Character.h"
 #include "Item.h"
 #include "FirstAidKitItem.h"
 #include "ExperienceItem.h"
 #include "ThrowableKnifeSpawnerComponent.h"
 #include "TheCoreSurvivorsCharacter.generated.h"
-
 
 
 UCLASS(config=Game)
@@ -28,16 +28,18 @@ class ATheCoreSurvivorsCharacter : public ACharacter,public ILifeManagerInterfac
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FollowCamera;
 
-	
-	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly,Category = Components,meta = (AllowPrivateAccess = "true"))
+	ULifeComponent* _LifeComponent = nullptr;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly,Category = Components,meta = (AllowPrivateAccess = "true"))
+	USpawnActorsComponent* _SpawnActor = nullptr;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly,Category = Components,meta = (AllowPrivateAccess = "true"))
+	UThrowableKnifeSpawnerComponent* _ThowableKnifeSpawner = nullptr;
 	
 	
 public:
 	ATheCoreSurvivorsCharacter();
-	
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-		ULifeComponent* _LifeComponent = nullptr;
 
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Input)

@@ -48,6 +48,10 @@ ATheCoreSurvivorsCharacter::ATheCoreSurvivorsCharacter()
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
 	this->_LifeComponent = CreateDefaultSubobject<ULifeComponent>(TEXT("_LifeComponent"));
+
+	this->_SpawnActor = CreateDefaultSubobject<USpawnActorsComponent>(TEXT("_SpawnComponent"));
+	
+	this->_ThowableKnifeSpawner = CreateDefaultSubobject<UThrowableKnifeSpawnerComponent>(TEXT("_ThowableKnifeSpawner"));
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 
@@ -155,6 +159,20 @@ void ATheCoreSurvivorsCharacter::StartDamageOverTime_Implementation(float dps)
 void ATheCoreSurvivorsCharacter::StopDamageOverTime_Implementation()
 {
 	_LifeComponent->StopDamageOverTime_Implementation();
+}
+
+void ATheCoreSurvivorsCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+	_LifeComponent->OnKillEntity.BindUObject(this,&ATheCoreSurvivorsCharacter::KillPlayer);
+
+	
+}
+
+void ATheCoreSurvivorsCharacter::KillPlayer()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("Muerto")));
+
 }
 
 void ATheCoreSurvivorsCharacter::BeginPlay()
