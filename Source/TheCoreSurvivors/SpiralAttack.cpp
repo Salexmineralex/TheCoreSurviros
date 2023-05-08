@@ -66,11 +66,11 @@ void USpiralAttack::do_spiral()
 			point = rotate_point(pivot, 180, point);
 		DrawDebugPoint(GetWorld(), point, 10, FColor::Red, false, 2.0f, 0);
 		if (counter % 4 == 0) {
-			if (throw_raycast(point)) {
-				if (raySphere.OutHit.GetActor());
+			//if (throw_raycast(point)) {
+				//if (raySphere.OutHit.GetActor())
 //					GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString().Printf(TEXT("counter = %d"), counter));
 					//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, raySphere.OutHit.GetActor()->GetName());
-			}
+			//}
 		} else
 			GEngine->ClearOnScreenDebugMessages();
 		counter++;
