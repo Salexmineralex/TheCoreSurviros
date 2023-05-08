@@ -166,27 +166,12 @@ void ATheCoreSurvivorsCharacter::BeginPlay()
 	Super::BeginPlay();
 	_LifeComponent->OnKillEntity.BindUObject(this,&ATheCoreSurvivorsCharacter::KillPlayer);
 
-	
-}
-
-void ATheCoreSurvivorsCharacter::KillPlayer()
-{
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("Muerto")));
-
-}
-
-void ATheCoreSurvivorsCharacter::BeginPlay()
-{
-	Super::BeginPlay();
-	_LifeComponent->OnKillEntity.BindUObject(this,&ATheCoreSurvivorsCharacter::KillPlayer);
-
 	GetCollisionComponent()->OnComponentBeginOverlap.AddDynamic(this, &ATheCoreSurvivorsCharacter::OnItemOverlap);
 }
 
 void ATheCoreSurvivorsCharacter::KillPlayer()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("Muerto")));
-
 }
 
 void ATheCoreSurvivorsCharacter::OnItemOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
