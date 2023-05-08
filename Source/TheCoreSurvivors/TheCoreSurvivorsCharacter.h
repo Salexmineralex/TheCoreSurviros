@@ -6,7 +6,12 @@
 #include "LifeComponent.h"
 #include "LifeManagerInterface.h"
 #include "GameFramework/Character.h"
+#include "Item.h"
+#include "FirstAidKitItem.h"
+#include "ExperienceItem.h"
+#include "ThrowableKnifeSpawnerComponent.h"
 #include "TheCoreSurvivorsCharacter.generated.h"
+
 
 
 UCLASS(config=Game)
@@ -24,6 +29,8 @@ class ATheCoreSurvivorsCharacter : public ACharacter,public ILifeManagerInterfac
 	class UCameraComponent* FollowCamera;
 
 	
+	
+
 	
 	
 public:
@@ -48,6 +55,14 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable, Category = "Damage")
 	void StopDamageOverTime(); virtual void StopDamageOverTime_Implementation() override ;
+
+	void OnItemOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		USphereComponent* sphereCollision;
+
+
+	USphereComponent* GetCollisionComponent() const;
 
 protected:
 
@@ -89,4 +104,7 @@ public:
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 };
+
+
+
 

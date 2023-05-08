@@ -50,6 +50,10 @@ ATheCoreSurvivorsCharacter::ATheCoreSurvivorsCharacter()
 	this->_LifeComponent = CreateDefaultSubobject<ULifeComponent>(TEXT("_LifeComponent"));
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
+
+	sphereCollision = CreateDefaultSubobject<USphereComponent>(TEXT("collision"));
+	sphereCollision->SetupAttachment(RootComponent);
+	
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -157,10 +161,40 @@ void ATheCoreSurvivorsCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	_LifeComponent->OnKillEntity.BindUObject(this,&ATheCoreSurvivorsCharacter::KillPlayer);
+
+	GetCollisionComponent()->OnComponentBeginOverlap.AddDynamic(this, &ATheCoreSurvivorsCharacter::OnItemOverlap);
 }
 
 void ATheCoreSurvivorsCharacter::KillPlayer()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("Muerto")));
 
+}
+
+void ATheCoreSurvivorsCharacter::OnItemOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	AItem* Item = Cast<AItem>(OtherActor);
+	if (Item)
+	{
+		AFirstAidKitItem* FirstAidKit = Cast<AFirstAidKitItem>(Item);
+		if (FirstAidKit)
+		{
+			// Incrementa la vida del jugador con el componente LifeComponent
+			_LifeComponent->RestoreAmount(FirstAidKit->lifeRecovered);
+		}
+		else
+		{
+			AExperienceItem* ExperienceItem = Cast<AExperienceItem>(Item);
+			if (ExperienceItem)
+			{
+				// Incrementa la experiencia del jugador
+				//Experience += ExperienceItem->experiencedGained;
+			}
+		}
+	}
+}
+
+USphereComponent* ATheCoreSurvivorsCharacter::GetCollisionComponent() const
+{
+	return sphereCollision;
 }

@@ -64,7 +64,7 @@ void ULifeComponent::ReduceAmount_Implementation(float damage)
 
 void ULifeComponent::RestoreAmount_Implementation(float recover)
 {
-	const int auxLife = CurrentLife + recover;
+	 int auxLife = CurrentLife + recover;
 
 
 	if(auxLife >= MaxLife)
