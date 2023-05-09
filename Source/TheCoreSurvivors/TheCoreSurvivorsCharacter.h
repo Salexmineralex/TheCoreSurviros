@@ -58,7 +58,10 @@ public:
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable, Category = "Damage")
 	void StopDamageOverTime(); virtual void StopDamageOverTime_Implementation() override ;
 
-	void OnItemOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	UFUNCTION()
+	void OnItemOverlap(UPrimitiveComponent* OverlappedComponent, 
+		AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+		const FHitResult& SweepResult);
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		USphereComponent* sphereCollision;

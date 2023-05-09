@@ -52,12 +52,14 @@ ATheCoreSurvivorsCharacter::ATheCoreSurvivorsCharacter()
 	this->_SpawnActor = CreateDefaultSubobject<USpawnActorsComponent>(TEXT("_SpawnComponent"));
 	
 	this->_ThowableKnifeSpawner = CreateDefaultSubobject<UThrowableKnifeSpawnerComponent>(TEXT("_ThowableKnifeSpawner"));
+	
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 
 	sphereCollision = CreateDefaultSubobject<USphereComponent>(TEXT("collision"));
 	sphereCollision->SetupAttachment(RootComponent);
-	
+
+
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -88,12 +90,12 @@ void ATheCoreSurvivorsCharacter::SetupPlayerInputComponent(class UInputComponent
 
 void ATheCoreSurvivorsCharacter::TouchStarted(ETouchIndex::Type FingerIndex, FVector Location)
 {
-	Jump();
+	//Jump();
 }
 
 void ATheCoreSurvivorsCharacter::TouchStopped(ETouchIndex::Type FingerIndex, FVector Location)
 {
-	StopJumping();
+	//StopJumping();
 }
 
 void ATheCoreSurvivorsCharacter::TurnAtRate(float Rate)
@@ -164,9 +166,10 @@ void ATheCoreSurvivorsCharacter::StopDamageOverTime_Implementation()
 void ATheCoreSurvivorsCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	_LifeComponent->OnKillEntity.BindUObject(this,&ATheCoreSurvivorsCharacter::KillPlayer);
 
-	GetCollisionComponent()->OnComponentBeginOverlap.AddDynamic(this, &ATheCoreSurvivorsCharacter::OnItemOverlap);
+	_LifeComponent->OnKillEntity.BindUObject(this,&ATheCoreSurvivorsCharacter::KillPlayer);
+	sphereCollision->OnComponentBeginOverlap.AddDynamic(this, &ATheCoreSurvivorsCharacter::OnItemOverlap);
+
 }
 
 void ATheCoreSurvivorsCharacter::KillPlayer()
@@ -174,9 +177,12 @@ void ATheCoreSurvivorsCharacter::KillPlayer()
 	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("Muerto")));
 }
 
-void ATheCoreSurvivorsCharacter::OnItemOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void ATheCoreSurvivorsCharacter::OnItemOverlap(UPrimitiveComponent* OverlappedComponent, 
+	AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, 
+	const FHitResult& SweepResult)
 {
 	AItem* Item = Cast<AItem>(OtherActor);
+	
 	if (Item)
 	{
 		AFirstAidKitItem* FirstAidKit = Cast<AFirstAidKitItem>(Item);
@@ -184,6 +190,7 @@ void ATheCoreSurvivorsCharacter::OnItemOverlap(UPrimitiveComponent* OverlappedCo
 		{
 			// Incrementa la vida del jugador con el componente LifeComponent
 			_LifeComponent->RestoreAmount(FirstAidKit->lifeRecovered);
+			FirstAidKit->Destroy();
 		}
 		else
 		{

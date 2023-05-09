@@ -67,7 +67,6 @@ void ABaseEnemy::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 {
 	isColliding = true;
 
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("Entrado")));
 	// Comprueba que el actor que ha entrado en contacto es válido
 	if (OtherActor != nullptr)
 	{
