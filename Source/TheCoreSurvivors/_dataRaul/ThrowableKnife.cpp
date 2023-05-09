@@ -2,7 +2,6 @@
 
 
 #include "TheCoreSurvivors/_dataRaul/ThrowableKnife.h"
-
 #include "TheCoreSurvivors/LifeManagerInterface.h"
 
 // Sets default values
@@ -42,15 +41,17 @@ void AThrowableKnife::Tick(float DeltaTime)
 void AThrowableKnife::BeginOverlap(UPrimitiveComponent* overlappedComponent, AActor* otherActor,
 	UPrimitiveComponent* otherComp, int32 otherBodyIndex, bool bFromSweep, const FHitResult& sweepResult)
 {
+
+	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+
 	if (otherActor != nullptr)
 	{
 		ILifeManagerInterface* LifeManager = Cast<ILifeManagerInterface>(otherActor);
 
-
 		if (LifeManager)
 		{
 			LifeManager->Execute_ReduceAmount(otherActor, this->damage);
+			this->Destroy();
 		}
-
 	}
 }

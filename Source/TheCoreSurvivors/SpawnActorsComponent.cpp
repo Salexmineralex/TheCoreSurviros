@@ -8,6 +8,9 @@
 #include "TimerManager.h"
 #include "Engine/Engine.h"
 #include "Engine/World.h"
+
+
+
 // Sets default values for this component's properties
 USpawnActorsComponent::USpawnActorsComponent()
 {
@@ -32,8 +35,6 @@ void USpawnActorsComponent::BeginPlay()
 
 	FTimerDelegate Delegate; // Delegate to bind function with parameters
 	Delegate.BindUFunction(this, "SpawnActor", North);
-	
-
 	GetWorld()->GetTimerManager().SetTimer(SpawnHandleNorth, Delegate, TimeBeforeSpawn,true);
 
 	Delegate.BindUFunction(this, "SpawnActor", West);
@@ -83,16 +84,11 @@ FVector USpawnActorsComponent::GetCompassDirecton(Compass direction)
 
 void USpawnActorsComponent::SpawnActor(Compass direction)
 {
-
-	
-
 	FVector spawnPosition = GetNewLocation(GetCompassDirecton(direction));
-	GEngine->AddOnScreenDebugMessage(-1, 1.5f, FColor::Yellow, spawnPosition.ToString());
 
-	FActorSpawnParameters SpawnInfo;
+	FActorSpawnParameters SpawnInfo;	
 
-	GetWorld()->SpawnActor<AActor>(ActorToSpawn,spawnPosition,GetOwner()->GetActorRotation(),SpawnInfo);
-	
+	GetWorld()->SpawnActor<AActor>(ActorToSpawn,spawnPosition,GetOwner()->GetActorRotation(),SpawnInfo);	
 }
 
 

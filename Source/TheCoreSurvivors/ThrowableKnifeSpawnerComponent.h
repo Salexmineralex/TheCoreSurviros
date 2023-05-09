@@ -24,9 +24,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void SpawnProjectile();
 
-	
-		//void StopSpawning();
-
 	UFUNCTION(BlueprintCallable)
 		void StartSpawning();
 
@@ -38,10 +35,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<AActor>knifeActor;
-
-	//void SpawnKnifeAtLocation(FVector spawnLocation);
-
-
 
 protected:
 	// Called when the game starts

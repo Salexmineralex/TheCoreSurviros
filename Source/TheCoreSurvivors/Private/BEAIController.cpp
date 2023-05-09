@@ -3,7 +3,7 @@
 void ABEAIController::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
 
 	AActor* PlayerActor = PlayerController->GetPawn();
@@ -14,13 +14,11 @@ void ABEAIController::BeginPlay()
 void ABEAIController::Tick(float DeltaTime) 
 {
 	Super::Tick(DeltaTime);
-
-	MoveToActor(Target,70,false);
-
 	
+	MoveToActor(Target,50,false);
 }
 
 void ABEAIController::OnMoveCompleted(FAIRequestID RequestID, EPathFollowingResult::Type Result)  
 {
-
+	// 
 }
