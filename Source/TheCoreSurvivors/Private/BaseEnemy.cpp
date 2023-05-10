@@ -26,11 +26,10 @@ ABaseEnemy::ABaseEnemy()
 
 	//	Life Component
 	_LifeComponent = CreateDefaultSubobject<ULifeComponent>(TEXT("LifeComponent"));
-	
 
 	// Asign a controller
 	AIControllerClass = ABEAIController::StaticClass();
-	
+
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 }
@@ -42,7 +41,6 @@ void ABaseEnemy::BeginPlay()
 	_LifeComponent->MaxLife = TotalLife;
 	Super::BeginPlay();
 	Collider->OnComponentBeginOverlap.AddDynamic(this, &ABaseEnemy::BeginOverlap);
-
 
 	if (Controller)
 	{
@@ -71,7 +69,6 @@ void ABaseEnemy::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	if (OtherActor != nullptr)
 	{
 		ILifeManagerInterface* LifeManager = Cast<ILifeManagerInterface>(OtherActor);
-
 
 		if (LifeManager)
 		{
