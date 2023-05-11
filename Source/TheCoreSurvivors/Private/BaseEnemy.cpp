@@ -27,9 +27,6 @@ ABaseEnemy::ABaseEnemy()
 	//	Life Component
 	_LifeComponent = CreateDefaultSubobject<ULifeComponent>(TEXT("LifeComponent"));
 
-	// Asign a controller
-	AIControllerClass = ABEAIController::StaticClass();
-
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 }
@@ -40,19 +37,11 @@ void ABaseEnemy::BeginPlay()
 	MovementComponent->MaxSpeed = MovementSpeed;
 	_LifeComponent->MaxLife = TotalLife;
 	Super::BeginPlay();
+
+		
 	Collider->OnComponentBeginOverlap.AddDynamic(this, &ABaseEnemy::BeginOverlap);
+	Collider->OnComponentEndOverlap.AddDynamic(this, &ABaseEnemy::EndOverlap);
 
-	if (Controller)
-	{
-		// Obtener una referencia al Pawn personalizado
-		ABaseEnemy* MyPawn = Cast<ABaseEnemy>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
-
-		if (MyPawn)
-		{
-			// Asignar el Pawn personalizado al Controlador personalizado
-			Controller->Possess(MyPawn);
-		}
-	}
 }
 
 
@@ -65,7 +54,6 @@ void ABaseEnemy::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 {
 	isColliding = true;
 
-	// Comprueba que el actor que ha entrado en contacto es válido
 	if (OtherActor != nullptr)
 	{
 		ILifeManagerInterface* LifeManager = Cast<ILifeManagerInterface>(OtherActor);
@@ -77,7 +65,15 @@ void ABaseEnemy::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 
 	}
 }
-void ABaseEnemy::EndOverlap(UPrimitiveComponent* overlappedComponent, AActor* otherActor, UPrimitiveComponent* otherComp, int32 otherBodyIndex, bool bFromSweep, const FHitResult& sweepResult)
+
+
+void ABaseEnemy::EndOverlap(UPrimitiveComponent* OverlappedComponent,
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex,
+	bool bFromSweep,
+	const FHitResult& SweepResult)
+
 {
 	isColliding = false;
 }
@@ -86,8 +82,5 @@ void ABaseEnemy::EndOverlap(UPrimitiveComponent* overlappedComponent, AActor* ot
 // Called every frame
 void ABaseEnemy::Tick(float DeltaTime)
 {
-	if (isColliding) 
-	{
-		// Ejecutar daño con el tiempo
-	}
+	
 }

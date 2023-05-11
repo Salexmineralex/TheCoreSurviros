@@ -20,7 +20,7 @@ void ABEAIController::Tick(float DeltaTime)
 
 void ABEAIController::OnMoveCompleted(FAIRequestID RequestID, EPathFollowingResult::Type Result)  
 {
-	// 
+
 }
 
 

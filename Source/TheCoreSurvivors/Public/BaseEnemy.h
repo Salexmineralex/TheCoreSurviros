@@ -9,6 +9,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "../LifeComponent.h"
 #include "../LifeManagerInterface.h"
+#include "BEAIController.h"
 #include "GameFramework/FloatingPawnMovement.h"
 #include "BaseEnemy.generated.h"
 
@@ -68,12 +69,4 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BaseEnemy")
 		int RatioToAppear;
-	
-	// For Debug
-	FVector Direction; 
-
-	float TotalDistance;
-	float CurrentDistance;
-	FVector StartLocation;
-
 };
