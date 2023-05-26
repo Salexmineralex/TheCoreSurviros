@@ -30,9 +30,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		USphereComponent* root;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float damage = 50;
-
+	
 	UFUNCTION()
 	void BeginOverlap(class UPrimitiveComponent* overlappedComponent, class AActor* otherActor,class UPrimitiveComponent* otherComp, int32 otherBodyIndex, bool bFromSweep,const FHitResult& sweepResult);
 	

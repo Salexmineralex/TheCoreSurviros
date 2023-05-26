@@ -52,8 +52,14 @@ ATheCoreSurvivorsCharacter::ATheCoreSurvivorsCharacter()
 	this->_SpawnActor = CreateDefaultSubobject<USpawnActorsComponent>(TEXT("_SpawnComponent"));
 	
 	this->_ThowableKnifeSpawner = CreateDefaultSubobject<UThrowableKnifeSpawnerComponent>(TEXT("_ThowableKnifeSpawner"));
+	
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
+
+	sphereCollision = CreateDefaultSubobject<USphereComponent>(TEXT("collision"));
+	sphereCollision->SetupAttachment(RootComponent);
+
+
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -63,8 +69,8 @@ void ATheCoreSurvivorsCharacter::SetupPlayerInputComponent(class UInputComponent
 {
 	// Set up gameplay key bindings
 	check(PlayerInputComponent);
-	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
-	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
+	//PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
+	//PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
 	PlayerInputComponent->BindAxis("Move Forward / Backward", this, &ATheCoreSurvivorsCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("Move Right / Left", this, &ATheCoreSurvivorsCharacter::MoveRight);
@@ -72,10 +78,10 @@ void ATheCoreSurvivorsCharacter::SetupPlayerInputComponent(class UInputComponent
 	// We have 2 versions of the rotation bindings to handle different kinds of devices differently
 	// "turn" handles devices that provide an absolute delta, such as a mouse.
 	// "turnrate" is for devices that we choose to treat as a rate of change, such as an analog joystick
-	PlayerInputComponent->BindAxis("Turn Right / Left Mouse", this, &APawn::AddControllerYawInput);
+	/*PlayerInputComponent->BindAxis("Turn Right / Left Mouse", this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("Turn Right / Left Gamepad", this, &ATheCoreSurvivorsCharacter::TurnAtRate);
 	PlayerInputComponent->BindAxis("Look Up / Down Mouse", this, &APawn::AddControllerPitchInput);
-	PlayerInputComponent->BindAxis("Look Up / Down Gamepad", this, &ATheCoreSurvivorsCharacter::LookUpAtRate);
+	PlayerInputComponent->BindAxis("Look Up / Down Gamepad", this, &ATheCoreSurvivorsCharacter::LookUpAtRate);*/
 
 	// handle touch devices
 	PlayerInputComponent->BindTouch(IE_Pressed, this, &ATheCoreSurvivorsCharacter::TouchStarted);
@@ -84,24 +90,24 @@ void ATheCoreSurvivorsCharacter::SetupPlayerInputComponent(class UInputComponent
 
 void ATheCoreSurvivorsCharacter::TouchStarted(ETouchIndex::Type FingerIndex, FVector Location)
 {
-	Jump();
+	//Jump();
 }
 
 void ATheCoreSurvivorsCharacter::TouchStopped(ETouchIndex::Type FingerIndex, FVector Location)
 {
-	StopJumping();
+	//StopJumping();
 }
 
 void ATheCoreSurvivorsCharacter::TurnAtRate(float Rate)
 {
-	// calculate delta for this frame from the rate information
-	AddControllerYawInput(Rate * TurnRateGamepad * GetWorld()->GetDeltaSeconds());
+	//// calculate delta for this frame from the rate information
+	//AddControllerYawInput(Rate * TurnRateGamepad * GetWorld()->GetDeltaSeconds());
 }
 
 void ATheCoreSurvivorsCharacter::LookUpAtRate(float Rate)
 {
-	// calculate delta for this frame from the rate information
-	AddControllerPitchInput(Rate * TurnRateGamepad * GetWorld()->GetDeltaSeconds());
+	//// calculate delta for this frame from the rate information
+	//AddControllerPitchInput(Rate * TurnRateGamepad * GetWorld()->GetDeltaSeconds());
 }
 
 void ATheCoreSurvivorsCharacter::MoveForward(float Value)
@@ -160,13 +166,46 @@ void ATheCoreSurvivorsCharacter::StopDamageOverTime_Implementation()
 void ATheCoreSurvivorsCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	_LifeComponent->OnKillEntity.BindUObject(this,&ATheCoreSurvivorsCharacter::KillPlayer);
 
-	
+	_LifeComponent->OnKillEntity.BindUObject(this,&ATheCoreSurvivorsCharacter::KillPlayer);
+	sphereCollision->OnComponentBeginOverlap.AddDynamic(this, &ATheCoreSurvivorsCharacter::OnItemOverlap);
+
 }
 
 void ATheCoreSurvivorsCharacter::KillPlayer()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("Muerto")));
+	
+}
 
+void ATheCoreSurvivorsCharacter::OnItemOverlap(UPrimitiveComponent* OverlappedComponent, 
+	AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, 
+	const FHitResult& SweepResult)
+{
+	AItem* Item = Cast<AItem>(OtherActor);
+	
+	if (Item)
+	{
+		AFirstAidKitItem* FirstAidKit = Cast<AFirstAidKitItem>(Item);
+		if (FirstAidKit)
+		{
+			// Incrementa la vida del jugador con el componente LifeComponent
+			_LifeComponent->RestoreAmount(FirstAidKit->lifeRecovered);
+			FirstAidKit->Destroy();
+		}
+		else
+		{
+			AExperienceItem* ExperienceItem = Cast<AExperienceItem>(Item);
+			if (ExperienceItem)
+			{
+				// Incrementa la experiencia del jugador
+				//Experience += ExperienceItem->experiencedGained;
+			}
+		}
+	}
+}
+
+USphereComponent* ATheCoreSurvivorsCharacter::GetCollisionComponent() const
+{
+	return sphereCollision;
 }

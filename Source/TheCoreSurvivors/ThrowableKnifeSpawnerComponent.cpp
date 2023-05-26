@@ -17,10 +17,7 @@ UThrowableKnifeSpawnerComponent::UThrowableKnifeSpawnerComponent()
 // Called when the game starts
 void UThrowableKnifeSpawnerComponent::BeginPlay()
 {
-	Super::BeginPlay();
-
-	 // Obtenemos el temporizador del mundo
-	
+	Super::BeginPlay();	
 	StartSpawning();
 }
 

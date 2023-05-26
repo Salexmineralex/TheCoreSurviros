@@ -43,23 +43,15 @@ void ULifeComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 
 void ULifeComponent::ReduceAmount_Implementation(float damage)
 {
-
 	
 	CurrentLife -= damage;
-
-	//TO-DO
-	//Change Widget Life Percent
 
 	if(CurrentLife <= 0)
 	{
 		//TO-DO
 		//Kill component owner
 		OnKillEntity.Execute();
-
-	}
-
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("CurrentLife %d"), CurrentLife));
-	
+	}	
 }
 
 void ULifeComponent::RestoreAmount_Implementation(float recover)
@@ -74,11 +66,6 @@ void ULifeComponent::RestoreAmount_Implementation(float recover)
 	}
 	
 	CurrentLife = auxLife;
-	
-	
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("CurrentLife %d"), CurrentLife));
-	//TO-DO
-	//Change Widget Life Percent
 }
 
 void ULifeComponent::StartDamageOverTime_Implementation(float dps)
