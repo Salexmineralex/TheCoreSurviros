@@ -27,6 +27,7 @@ ABaseEnemy::ABaseEnemy()
 	//	Life Component
 	_LifeComponent = CreateDefaultSubobject<ULifeComponent>(TEXT("LifeComponent"));
 
+
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 }
@@ -34,14 +35,21 @@ ABaseEnemy::ABaseEnemy()
 // Called when the game starts or when spawned
 void ABaseEnemy::BeginPlay()
 {
+	Super::BeginPlay();
+	
 	MovementComponent->MaxSpeed = MovementSpeed;
 	_LifeComponent->MaxLife = TotalLife;
-	Super::BeginPlay();
+
+
+	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+
+	AActor* PlayerActor = PlayerController->GetPawn();
+
+	Target = PlayerActor;
 
 		
 	Collider->OnComponentBeginOverlap.AddDynamic(this, &ABaseEnemy::BeginOverlap);
 	Collider->OnComponentEndOverlap.AddDynamic(this, &ABaseEnemy::EndOverlap);
-
 }
 
 
@@ -67,20 +75,38 @@ void ABaseEnemy::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 }
 
 
-void ABaseEnemy::EndOverlap(UPrimitiveComponent* OverlappedComponent,
-	AActor* OtherActor,
-	UPrimitiveComponent* OtherComp,
-	int32 OtherBodyIndex,
-	bool bFromSweep,
-	const FHitResult& SweepResult)
+void ABaseEnemy::EndOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 
 {
 	isColliding = false;
 }
-;
+
 
 // Called every frame
 void ABaseEnemy::Tick(float DeltaTime)
 {
-	
+
+	if (isColliding) 
+	{
+		float AccumulatedTime = 0.f;
+		AccumulatedTime += DeltaTime;
+
+		float Interval = 1.0f;
+
+		if (AccumulatedTime >= Interval)
+		{
+			ILifeManagerInterface* LifeManager = Cast<ILifeManagerInterface>(Target);
+
+			if (LifeManager) 
+			{
+				LifeManager->Execute_ReduceAmount(Target, DpsDamage);
+			}
+
+			AccumulatedTime = 0.0f;
+		}
+		
+		
+	}
 }
+
+
