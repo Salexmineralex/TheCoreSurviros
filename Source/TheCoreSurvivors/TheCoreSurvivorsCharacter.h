@@ -3,13 +3,22 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "LifeComponent.h"
+#include "LifeManagerInterface.h"
+#include "SpawnActorsComponent.h"
 #include "GameFramework/Character.h"
+#include "Item.h"
+#include "FirstAidKitItem.h"
+#include "ExperienceItem.h"
+#include "ThrowableKnifeSpawnerComponent.h"
 #include "TheCoreSurvivorsCharacter.generated.h"
 
+
 UCLASS(config=Game)
-class ATheCoreSurvivorsCharacter : public ACharacter
+class ATheCoreSurvivorsCharacter : public ACharacter,public ILifeManagerInterface
 {
 	GENERATED_BODY()
+
 
 	/** Camera boom positioning the camera behind the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -18,6 +27,17 @@ class ATheCoreSurvivorsCharacter : public ACharacter
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FollowCamera;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly,Category = Components,meta = (AllowPrivateAccess = "true"))
+	ULifeComponent* _LifeComponent = nullptr;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly,Category = Components,meta = (AllowPrivateAccess = "true"))
+	USpawnActorsComponent* _SpawnActor = nullptr;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly,Category = Components,meta = (AllowPrivateAccess = "true"))
+	UThrowableKnifeSpawnerComponent* _ThowableKnifeSpawner = nullptr;
+	
+	
 public:
 	ATheCoreSurvivorsCharacter();
 
@@ -25,8 +45,33 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Input)
 	float TurnRateGamepad;
 
+	//LifeInterface
+	UFUNCTION(BlueprintCallable,BlueprintNativeEvent, Category = "Damage")
+	void ReduceAmount(float damage); virtual void ReduceAmount_Implementation(float damage) override;
+
+	UFUNCTION(BlueprintNativeEvent,BlueprintCallable, Category = "Damage")
+	void RestoreAmount(float recover); virtual void RestoreAmount_Implementation(float recover) override;
+	
+	UFUNCTION(BlueprintNativeEvent,BlueprintCallable, Category = "Damage")
+	void StartDamageOverTime(float dps); virtual void StartDamageOverTime_Implementation(float dps) override;
+
+	UFUNCTION(BlueprintNativeEvent,BlueprintCallable, Category = "Damage")
+	void StopDamageOverTime(); virtual void StopDamageOverTime_Implementation() override ;
+
+	UFUNCTION()
+	void OnItemOverlap(UPrimitiveComponent* OverlappedComponent, 
+		AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+		const FHitResult& SweepResult);
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		USphereComponent* sphereCollision;
+
+
+	USphereComponent* GetCollisionComponent() const;
+
 protected:
 
+	void BeginPlay() override;
 	/** Called for forwards/backward input */
 	void MoveForward(float Value);
 
@@ -51,6 +96,8 @@ protected:
 	/** Handler for when a touch input stops. */
 	void TouchStopped(ETouchIndex::Type FingerIndex, FVector Location);
 
+	void KillPlayer();
+
 protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -62,4 +109,7 @@ public:
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 };
+
+
+
 
