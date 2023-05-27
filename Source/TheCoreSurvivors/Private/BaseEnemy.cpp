@@ -39,15 +39,23 @@ ABaseEnemy::ABaseEnemy()
 // Called when the game starts or when spawned
 void ABaseEnemy::BeginPlay()
 {
-	
 	Super::BeginPlay();
+	
+	MovementComponent->MaxSpeed = MovementSpeed;
+	_LifeComponent->MaxLife = TotalLife;
+	
+	
+	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+
+	AActor* PlayerActor = PlayerController->GetPawn();
+
+	Target = PlayerActor;
 
 	MovementComponent->MaxSpeed = MovementSpeed;
 	_LifeComponent->MaxLife = TotalLife;
 	
 	Collider->OnComponentBeginOverlap.AddDynamic(this, &ABaseEnemy::BeginOverlap);
-	// Collider->OnComponentEndOverlap.AddDynamic(this, &ABaseEnemy::EndOverlap);
-
+	Collider->OnComponentEndOverlap.AddDynamic(this, &ABaseEnemy::EndOverlap);
 }
 
 
@@ -77,18 +85,24 @@ void ABaseEnemy::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 }
 
 
-void ABaseEnemy::EndOverlap(UPrimitiveComponent* OverlappedComponent,
-	AActor* OtherActor,
-	UPrimitiveComponent* OtherComp,
-	int32 OtherBodyIndex,
-	bool bFromSweep,
-	const FHitResult& SweepResult)
+void ABaseEnemy::EndOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 
 {
 	isColliding = false;
 }
-;
 
+void ABaseEnemy::DpsDamageFucnt() 
+{
+	ILifeManagerInterface* LifeManager = Cast<ILifeManagerInterface>(Target);
+
+	if (LifeManager)
+	{
+		LifeManager->Execute_ReduceAmount(Target, DpsDamage);
+		GetWorld()->GetTimerManager().SetTimer(delayTimerHandle, this, &ABaseEnemy::DpsDamageFucnt, 1.f, false);
+
+	}
+
+}
 void ABaseEnemy::Die()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("EnemyMuerto")));
@@ -122,5 +136,11 @@ void ABaseEnemy::StopDamageOverTime_Implementation()
 // Called every frame
 void ABaseEnemy::Tick(float DeltaTime)
 {
-	
+
+	if (isColliding) 
+	{
+		DpsDamageFucnt();
+	}
 }
+
+

@@ -11,6 +11,7 @@
 #include "../LifeManagerInterface.h"
 #include "BEAIController.h"
 #include "GameFramework/FloatingPawnMovement.h"
+#include "TimerManager.h"
 #include "BaseEnemy.generated.h"
 
 UCLASS()
@@ -33,7 +34,10 @@ public:
 	void BeginOverlap(class UPrimitiveComponent* overlappedComponent, class AActor* otherActor,class UPrimitiveComponent* otherComp, int32 otherBodyIndex, bool bFromSweep,const FHitResult& sweepResult);
 	
 	UFUNCTION()
-	void EndOverlap(class UPrimitiveComponent* overlappedComponent, class AActor* otherActor, class UPrimitiveComponent* otherComp, int32 otherBodyIndex, bool bFromSweep, const FHitResult& sweepResult);
+	void EndOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+	UFUNCTION()
+	void DpsDamageFucnt();
 
 	UFUNCTION()
 	void Die();
@@ -74,6 +78,8 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BaseEnemy")
 		int RatioToAppear;
 
+
+	FTimerHandle delayTimerHandle;
 	//LifeInterface
 	UFUNCTION(BlueprintCallable,BlueprintNativeEvent, Category = "Damage")
 	void ReduceAmount(float damage); virtual void ReduceAmount_Implementation(float damage) override;
