@@ -39,8 +39,8 @@ void ABaseEnemy::BeginPlay()
 	
 	MovementComponent->MaxSpeed = MovementSpeed;
 	_LifeComponent->MaxLife = TotalLife;
-
-
+	
+	
 	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
 
 	AActor* PlayerActor = PlayerController->GetPawn();
@@ -81,31 +81,25 @@ void ABaseEnemy::EndOverlap(class UPrimitiveComponent* OverlappedComp, class AAc
 	isColliding = false;
 }
 
+void ABaseEnemy::DpsDamageFucnt() 
+{
+	ILifeManagerInterface* LifeManager = Cast<ILifeManagerInterface>(Target);
 
+	if (LifeManager)
+	{
+		LifeManager->Execute_ReduceAmount(Target, DpsDamage);
+		GetWorld()->GetTimerManager().SetTimer(delayTimerHandle, this, &ABaseEnemy::DpsDamageFucnt, 1.f, false);
+
+	}
+
+}
 // Called every frame
 void ABaseEnemy::Tick(float DeltaTime)
 {
 
 	if (isColliding) 
 	{
-		float AccumulatedTime = 0.f;
-		AccumulatedTime += DeltaTime;
-
-		float Interval = 1.0f;
-
-		if (AccumulatedTime >= Interval)
-		{
-			ILifeManagerInterface* LifeManager = Cast<ILifeManagerInterface>(Target);
-
-			if (LifeManager) 
-			{
-				LifeManager->Execute_ReduceAmount(Target, DpsDamage);
-			}
-
-			AccumulatedTime = 0.0f;
-		}
-		
-		
+		DpsDamageFucnt();
 	}
 }
 
