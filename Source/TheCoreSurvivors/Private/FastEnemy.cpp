@@ -10,5 +10,5 @@ void AFastEnemy::BeginPlay()
 	MovementComponent->MaxSpeed = 250;
 	_LifeComponent->MaxLife = 2;
 	NormalDamage = 1;
-	DpsDamage = 1;
+	DpsDamage = NormalDamage / 10;
 }

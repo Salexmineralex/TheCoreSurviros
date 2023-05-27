@@ -10,4 +10,5 @@ void ASlowEnemy::BeginPlay()
 	MovementComponent->MaxSpeed = 20;
 	_LifeComponent->MaxLife = 50;
 	NormalDamage = 10;
+	DpsDamage = 1;
 }

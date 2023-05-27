@@ -98,7 +98,7 @@ void ABaseEnemy::DpsDamageFucnt()
 	if (LifeManager)
 	{
 		LifeManager->Execute_ReduceAmount(Target, DpsDamage);
-		GetWorld()->GetTimerManager().SetTimer(delayTimerHandle, this, &ABaseEnemy::DpsDamageFucnt, 1.f, false);
+		GetWorld()->GetTimerManager().SetTimer(delayTimerHandle, this, &ABaseEnemy::DpsDamageFucnt, 1.f);
 
 	}
 
@@ -107,8 +107,6 @@ void ABaseEnemy::Die()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("EnemyMuerto")));
 	this->Destroy();
-
-
 }
 
 void ABaseEnemy::ReduceAmount_Implementation(float damage)

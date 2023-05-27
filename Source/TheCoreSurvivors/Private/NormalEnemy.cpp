@@ -11,5 +11,6 @@ void ANormalEnemy::BeginPlay()
 	MovementComponent->MaxSpeed = 100;
 	_LifeComponent->MaxLife = 10;
 	NormalDamage = 5;
+	DpsDamage =  1;
 }
 
