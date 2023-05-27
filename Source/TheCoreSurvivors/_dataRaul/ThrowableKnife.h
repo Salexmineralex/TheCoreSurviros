@@ -8,6 +8,7 @@
 #include "Components/BoxComponent.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "TheCoreSurvivors/LifeManagerInterface.h"
 #include "ThrowableKnife.generated.h"
 
 UCLASS()
@@ -29,6 +30,10 @@ public:
 		UProjectileMovementComponent* projectileMovement;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		USphereComponent* root;
+
+		
+	UPROPERTY(Transient,SkipSerialization)
+	TScriptInterface<ILifeManagerInterface> DamageableObject = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float damage = 50;

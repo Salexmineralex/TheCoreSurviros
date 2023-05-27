@@ -1,6 +1,9 @@
 
 
 #include "BaseEnemy.h"
+#include "TheCoreSurvivors/Public/BaseEnemy.h"
+
+#include "TheCoreSurvivors/_dataRaul/ThrowableKnife.h"
 
 // Sets default values
 ABaseEnemy::ABaseEnemy()
@@ -27,6 +30,8 @@ ABaseEnemy::ABaseEnemy()
 	//	Life Component
 	_LifeComponent = CreateDefaultSubobject<ULifeComponent>(TEXT("LifeComponent"));
 
+	_LifeComponent->OnKillEntity.BindDynamic(this,&ABaseEnemy::Die);
+
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 }
@@ -34,13 +39,14 @@ ABaseEnemy::ABaseEnemy()
 // Called when the game starts or when spawned
 void ABaseEnemy::BeginPlay()
 {
-	MovementComponent->MaxSpeed = MovementSpeed;
-	_LifeComponent->MaxLife = TotalLife;
+	
 	Super::BeginPlay();
 
-		
+	MovementComponent->MaxSpeed = MovementSpeed;
+	_LifeComponent->MaxLife = TotalLife;
+	
 	Collider->OnComponentBeginOverlap.AddDynamic(this, &ABaseEnemy::BeginOverlap);
-	Collider->OnComponentEndOverlap.AddDynamic(this, &ABaseEnemy::EndOverlap);
+	// Collider->OnComponentEndOverlap.AddDynamic(this, &ABaseEnemy::EndOverlap);
 
 }
 
@@ -54,8 +60,12 @@ void ABaseEnemy::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 {
 	isColliding = true;
 
+	
+	
 	if (OtherActor != nullptr)
 	{
+
+	
 		ILifeManagerInterface* LifeManager = Cast<ILifeManagerInterface>(OtherActor);
 
 		if (LifeManager)
@@ -78,6 +88,36 @@ void ABaseEnemy::EndOverlap(UPrimitiveComponent* OverlappedComponent,
 	isColliding = false;
 }
 ;
+
+void ABaseEnemy::Die()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("EnemyMuerto")));
+	this->Destroy();
+
+
+}
+
+void ABaseEnemy::ReduceAmount_Implementation(float damage)
+{
+
+	_LifeComponent->ReduceAmount_Implementation(damage);
+}
+
+void ABaseEnemy::RestoreAmount_Implementation(float recover)
+{
+	_LifeComponent->RestoreAmount_Implementation(recover);
+}
+
+void ABaseEnemy::StartDamageOverTime_Implementation(float dps)
+{
+	_LifeComponent->StartDamageOverTime_Implementation((dps));
+}
+
+void ABaseEnemy::StopDamageOverTime_Implementation()
+{
+	_LifeComponent->StopDamageOverTime_Implementation();
+}
+
 
 // Called every frame
 void ABaseEnemy::Tick(float DeltaTime)

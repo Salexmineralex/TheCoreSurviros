@@ -167,7 +167,7 @@ void ATheCoreSurvivorsCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	_LifeComponent->OnKillEntity.BindUObject(this,&ATheCoreSurvivorsCharacter::KillPlayer);
+	_LifeComponent->OnKillEntity.BindDynamic(this,&ATheCoreSurvivorsCharacter::KillPlayer);
 	sphereCollision->OnComponentBeginOverlap.AddDynamic(this, &ATheCoreSurvivorsCharacter::OnItemOverlap);
 
 }

@@ -13,7 +13,7 @@ class THECORESURVIVORS_API ULifeComponent : public UActorComponent,public ILifeM
 {
 	GENERATED_BODY()
 
-	DECLARE_DELEGATE(FKillEntity);
+	DECLARE_DYNAMIC_DELEGATE(FKillEntity);
 
 	
 	UPROPERTY(BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))

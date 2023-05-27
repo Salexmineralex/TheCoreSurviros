@@ -14,7 +14,7 @@
 #include "BaseEnemy.generated.h"
 
 UCLASS()
-class THECORESURVIVORS_API ABaseEnemy : public APawn
+class THECORESURVIVORS_API ABaseEnemy : public APawn, public ILifeManagerInterface
 {
 	GENERATED_BODY()
 	
@@ -35,8 +35,12 @@ public:
 	UFUNCTION()
 	void EndOverlap(class UPrimitiveComponent* overlappedComponent, class AActor* otherActor, class UPrimitiveComponent* otherComp, int32 otherBodyIndex, bool bFromSweep, const FHitResult& sweepResult);
 
+	UFUNCTION()
+	void Die();
+	
 	ULifeComponent* _LifeComponent = nullptr;
 	UFloatingPawnMovement* MovementComponent = nullptr;
+
 	
 protected:
 	
@@ -69,4 +73,20 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BaseEnemy")
 		int RatioToAppear;
+
+	//LifeInterface
+	UFUNCTION(BlueprintCallable,BlueprintNativeEvent, Category = "Damage")
+	void ReduceAmount(float damage); virtual void ReduceAmount_Implementation(float damage) override;
+
+	UFUNCTION(BlueprintNativeEvent,BlueprintCallable, Category = "Damage")
+	void RestoreAmount(float recover); virtual void RestoreAmount_Implementation(float recover) override;
+	
+	UFUNCTION(BlueprintNativeEvent,BlueprintCallable, Category = "Damage")
+	void StartDamageOverTime(float dps); virtual void StartDamageOverTime_Implementation(float dps) override;
+
+	UFUNCTION(BlueprintNativeEvent,BlueprintCallable, Category = "Damage")
+	void StopDamageOverTime(); virtual void StopDamageOverTime_Implementation() override ;
+
+
+
 };

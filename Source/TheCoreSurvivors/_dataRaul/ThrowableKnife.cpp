@@ -2,6 +2,9 @@
 
 
 #include "TheCoreSurvivors/_dataRaul/ThrowableKnife.h"
+
+#include "BaseEnemy.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "TheCoreSurvivors/LifeManagerInterface.h"
 
 // Sets default values
@@ -46,12 +49,13 @@ void AThrowableKnife::BeginOverlap(UPrimitiveComponent* overlappedComponent, AAc
 
 	if (otherActor != nullptr)
 	{
-		ILifeManagerInterface* LifeManager = Cast<ILifeManagerInterface>(otherActor);
-
-		if (LifeManager)
+		ABaseEnemy* enemy = Cast<ABaseEnemy>(otherActor);
+		//UKismetSystemLibrary::DoesImplementInterface(otherActor->GetOwner(),ULifeMdanagerInterface::StaticClass())
+		if(enemy)
 		{
-			LifeManager->Execute_ReduceAmount(otherActor, this->damage);
-			this->Destroy();
+			enemy->_LifeComponent->ReduceAmount_Implementation(this->damage);
+
 		}
+	
 	}
 }
