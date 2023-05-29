@@ -110,7 +110,7 @@ void ABaseEnemy::Die()
 	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("EnemyMuerto")));
 	int ran = FMath::RandRange(0, 100);
 	FActorSpawnParameters SpawnInfo;
-	if(ran > 50)
+	if(ran > 90)
 	{
 		
 		GetWorld()->SpawnActor<AFirstAidKitItem>(AidKitItem,this->GetActorLocation(),GetOwner()->GetActorRotation(),SpawnInfo);
