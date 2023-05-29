@@ -23,9 +23,12 @@ void AFirstAidKitItem::Init(float newValue)
 	lifeRecovered = newValue;
 }
 
+
+
 // Called every frame
 void AFirstAidKitItem::Tick(float DeltaTime)
 {
+
 	Super::Tick(DeltaTime);
 
 }

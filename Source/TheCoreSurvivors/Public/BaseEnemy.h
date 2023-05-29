@@ -12,6 +12,8 @@
 #include "BEAIController.h"
 #include "GameFramework/FloatingPawnMovement.h"
 #include "TimerManager.h"
+#include "TheCoreSurvivors/ExperienceItem.h"
+#include "TheCoreSurvivors/FirstAidKitItem.h"
 #include "BaseEnemy.generated.h"
 
 UCLASS()
@@ -29,6 +31,13 @@ public:
 
 	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category = "BaseEnemy")
 		class AActor* Target;
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<AExperienceItem> ExperienceItem;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<AFirstAidKitItem> AidKitItem;
 
 	UFUNCTION()
 	void BeginOverlap(class UPrimitiveComponent* overlappedComponent, class AActor* otherActor,class UPrimitiveComponent* otherComp, int32 otherBodyIndex, bool bFromSweep,const FHitResult& sweepResult);

@@ -54,6 +54,7 @@ void AThrowableKnife::BeginOverlap(UPrimitiveComponent* overlappedComponent, AAc
 		if(enemy)
 		{
 			enemy->_LifeComponent->ReduceAmount_Implementation(this->damage);
+			
 
 		}
 	

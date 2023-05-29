@@ -3,6 +3,8 @@
 #include "BaseEnemy.h"
 #include "TheCoreSurvivors/Public/BaseEnemy.h"
 
+#include "TheCoreSurvivors/ExperienceItem.h"
+#include "TheCoreSurvivors/FirstAidKitItem.h"
 #include "TheCoreSurvivors/_dataRaul/ThrowableKnife.h"
 
 // Sets default values
@@ -106,6 +108,18 @@ void ABaseEnemy::DpsDamageFucnt()
 void ABaseEnemy::Die()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("EnemyMuerto")));
+	int ran = FMath::RandRange(0, 100);
+	FActorSpawnParameters SpawnInfo;
+	if(ran > 50)
+	{
+		
+		GetWorld()->SpawnActor<AFirstAidKitItem>(AidKitItem,this->GetActorLocation(),GetOwner()->GetActorRotation(),SpawnInfo);
+	}else
+	{
+	
+		GetWorld()->SpawnActor<AExperienceItem>(ExperienceItem,this->GetActorLocation(),GetOwner()->GetActorRotation(),SpawnInfo);
+	}
+
 	this->Destroy();
 }
 
@@ -134,11 +148,11 @@ void ABaseEnemy::StopDamageOverTime_Implementation()
 // Called every frame
 void ABaseEnemy::Tick(float DeltaTime)
 {
-
-	if (isColliding) 
-	{
-		DpsDamageFucnt();
-	}
+	//
+	// if (isColliding) 
+	// {
+	// 	DpsDamageFucnt();
+	// }
 }
 
 

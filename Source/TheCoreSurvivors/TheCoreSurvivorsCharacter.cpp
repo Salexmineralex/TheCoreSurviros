@@ -50,8 +50,11 @@ ATheCoreSurvivorsCharacter::ATheCoreSurvivorsCharacter()
 	this->_LifeComponent = CreateDefaultSubobject<ULifeComponent>(TEXT("_LifeComponent"));
 
 	this->_SpawnActor = CreateDefaultSubobject<USpawnActorsComponent>(TEXT("_SpawnComponent"));
+
+	this->_EXPComponent = CreateDefaultSubobject<UExperienceComponent>(TEXT("_ExpComponent"));
 	
 	this->_ThowableKnifeSpawner = CreateDefaultSubobject<UThrowableKnifeSpawnerComponent>(TEXT("_ThowableKnifeSpawner"));
+
 	
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
@@ -168,6 +171,8 @@ void ATheCoreSurvivorsCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	_LifeComponent->OnKillEntity.BindDynamic(this,&ATheCoreSurvivorsCharacter::KillPlayer);
+	_EXPComponent->OnLevelUP.BindDynamic(this,&ATheCoreSurvivorsCharacter::LevelUp);
+
 	sphereCollision->OnComponentBeginOverlap.AddDynamic(this, &ATheCoreSurvivorsCharacter::OnItemOverlap);
 
 }
@@ -200,9 +205,18 @@ void ATheCoreSurvivorsCharacter::OnItemOverlap(UPrimitiveComponent* OverlappedCo
 			{
 				// Incrementa la experiencia del jugador
 				//Experience += ExperienceItem->experiencedGained;
+				_EXPComponent->AddXP_Implementation(ExperienceItem->experiencedGained);
+				ExperienceItem->Destroy();
+				
 			}
 		}
 	}
+}
+
+void ATheCoreSurvivorsCharacter::LevelUp()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("LevelUP")));
+
 }
 
 USphereComponent* ATheCoreSurvivorsCharacter::GetCollisionComponent() const

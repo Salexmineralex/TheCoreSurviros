@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ExperienceComponent.h"
 #include "LifeComponent.h"
 #include "LifeManagerInterface.h"
 #include "SpawnActorsComponent.h"
@@ -10,6 +11,7 @@
 #include "Item.h"
 #include "FirstAidKitItem.h"
 #include "ExperienceItem.h"
+#include "IExpManagerInterface.h"
 #include "ThrowableKnifeSpawnerComponent.h"
 #include "TheCoreSurvivorsCharacter.generated.h"
 
@@ -30,6 +32,9 @@ class ATheCoreSurvivorsCharacter : public ACharacter,public ILifeManagerInterfac
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly,Category = Components,meta = (AllowPrivateAccess = "true"))
 	ULifeComponent* _LifeComponent = nullptr;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly,Category = Components,meta = (AllowPrivateAccess = "true"))
+	UExperienceComponent* _EXPComponent = nullptr;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly,Category = Components,meta = (AllowPrivateAccess = "true"))
 	USpawnActorsComponent* _SpawnActor = nullptr;
@@ -98,6 +103,9 @@ protected:
 
 	UFUNCTION()
 	void KillPlayer();
+
+	UFUNCTION()
+	void LevelUp();
 
 protected:
 	// APawn interface

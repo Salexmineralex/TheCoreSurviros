@@ -23,6 +23,7 @@ public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 		USphereComponent* boxCollider;
 
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
