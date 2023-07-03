@@ -108,16 +108,20 @@ void ABaseEnemy::DpsDamageFucnt()
 void ABaseEnemy::Die()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("EnemyMuerto")));
+	const FRotator SpawnRotation = GetActorRotation();
+
 	int ran = FMath::RandRange(0, 100);
 	FActorSpawnParameters SpawnInfo;
+	SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	if(ran > 90)
 	{
 		
-		GetWorld()->SpawnActor<AFirstAidKitItem>(AidKitItem,this->GetActorLocation(),GetOwner()->GetActorRotation(),SpawnInfo);
-	}else
+		GetWorld()->SpawnActor<AFirstAidKitItem>(AidKitItem,this->GetActorLocation(), SpawnRotation,SpawnInfo);
+	}
+	else
 	{
 	
-		GetWorld()->SpawnActor<AExperienceItem>(ExperienceItem,this->GetActorLocation(),GetOwner()->GetActorRotation(),SpawnInfo);
+		GetWorld()->SpawnActor<AExperienceItem>(ExperienceItem,this->GetActorLocation(), SpawnRotation,SpawnInfo);
 	}
 
 	this->Destroy();
